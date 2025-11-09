@@ -21,7 +21,7 @@ function Footer(){
 }
 function Layout(){ return (<><Header/><main style={{maxWidth:900, margin:'0 auto', padding:'1rem 1.25rem'}}><Outlet/></main><Footer/></>) }
 
-function Home(){ return (<section style={{textAlign:'center'}}><h2>Welcome</h2><p>This is Home.</p></section>) }
+function Home(){ return (<section style={{textAlign:'center'}}><h2>Welcome</h2><p>This is a simple React application structure.</p></section>) }
 function ProjectOverview(){ return (<section style={{textAlign:'center'}}><h2>Project Overview</h2><p>Same content as your normal site here.</p></section>) }
 function Introduction(){ return (<section style={{textAlign:'center'}}><h2>Introduction</h2><p>Your intro text here.</p></section>) }
 
