@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, NavLink, Outlet } from 'react-router-dom'
-
+import Footer from './components/Footer.jsx' 
 const link = ({ isActive }) => ({ textDecoration:'none', color: isActive ? '#0a5fff' : '#54606e' })
 
 function Header(){
