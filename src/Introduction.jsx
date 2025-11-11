@@ -1,4 +1,5 @@
 // src/Introduction.jsx
+import Footer from './components/Footer.jsx'
 
 export default function Introduction() {
   return (
