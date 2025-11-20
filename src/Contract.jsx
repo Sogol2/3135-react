@@ -1,5 +1,12 @@
 // src/Contract.jsx
+import { useEffect } from "react";
+
 export default function Contract() {
+  useEffect(() => {
+    document.title = "Sogol Maghzian || ITIS3135 Contract";
+  }, []);
+
+  
     // Use today's date or keep your fixed date from the static page:
     // const signedOn = "07/09/2025";
     const signedOn = new Date().toLocaleDateString("en-US");

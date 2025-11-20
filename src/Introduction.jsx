@@ -1,6 +1,13 @@
 // src/Introduction.jsx
 import portrait from './assets/IMG_3965.JPG';
+import { useEffect } from "react";
+
 export default function Introduction() {
+  useEffect(() => {
+    document.title = "Sogol Maghzian || ITIS3135 Introduction";
+  }, []);
+
+
   return (
     <article className="intro-page">
       <figure className="intro-figure">
