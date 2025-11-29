@@ -6,6 +6,7 @@ import Introduction from './Introduction.jsx';
 import Contract from './Contract.jsx';
 import Home from './Home.jsx'
 import './styles/default.css';
+import ClassIntroductions from "./ClassIntroductions";
 
 
 const link = ({ isActive }) => ({ textDecoration:'none', color: isActive ? '#0a5fff' : '#54606e' })
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')).render(
         <Route index element={<Home/>} />
         <Route path="contract" element={<Contract/>} />        <Route path="introduction" element={<Introduction/>} />
         <Route path="*" element={<div style={{padding:20}}>404 — Not Found</div>} />
+        <Route path="/class-intros" element={<ClassIntroductions />} />
       </Route>
     </Routes>
   </BrowserRouter>

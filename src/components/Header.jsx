@@ -15,6 +15,9 @@ export default function Header() {
           <li><NavLink to="/" end style={link}>Home</NavLink></li>
           <li><NavLink to="/introduction" style={link}>Introduction</NavLink></li>
           <li><NavLink to="/contract" style={link}>Contract</NavLink></li>
+          <li>
+            <NavLink to="/class-intros">Class Introductions</NavLink>
+          </li>
         </ul>
       </nav>
 
