@@ -130,7 +130,7 @@ export default function ClassIntroductions() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    document.title = "Sogol Maghzian || ITIS 3135 Class Introductions";
+    document.title = "Sogol Maghzian || ITIS3135 Class Introductions";
   }, []);
 
   // Fetch data once on mount
