@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function ClassIntroductions() 
+export default function ClassIntroductions() {
     useEffect(() => {
       document.title = "Sogol Maghzian || ITIS3135 Class_intro";
     }, []);
@@ -300,4 +300,5 @@ export default function ClassIntroductions() {
       )}
     </main>
   );
+}
 }
