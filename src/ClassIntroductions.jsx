@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 
-    useEffect(() => {
-      document.title = "Sogol Maghzian || ITIS3135 Class_intro";
-    }, []);
-
 const API_URL = "https://dvonb.xyz/api/2025-fall/itis-3135/students?full=1";
 
 function StudentCard({ student }) {
@@ -132,6 +128,10 @@ export default function ClassIntroductions() {
   const [searchTerm, setSearchTerm] = useState("");
   const [mode, setMode] = useState("all"); // "all" or "single"
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    document.title = "Sogol Maghzian || ITIS 3135 Class Introductions";
+  }, []);
 
   // Fetch data once on mount
   useEffect(() => {
