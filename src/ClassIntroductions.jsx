@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 
+export default function ClassIntroductions() 
+    useEffect(() => {
+      document.title = "Sogol Maghzian || ITIS3135 Class_intro";
+    }, []);
+
 const API_URL = "https://dvonb.xyz/api/2025-fall/itis-3135/students?full=1";
 
 function StudentCard({ student }) {
