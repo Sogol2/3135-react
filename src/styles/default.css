@@ -145,7 +145,6 @@ h2{
   font-weight: 600;
 }
 
-/* stack all student cards vertically */
 .class-intros__grid {
   display: flex;
   flex-direction: column;   /* vertical */
@@ -153,7 +152,6 @@ h2{
   align-items: center;      /* center cards horizontally */
 }
 
-/* optional: keep each card a nice readable width */
 .class-intros__grid .student-card {
   width: 100%;
   max-width: 800px;
@@ -196,14 +194,11 @@ h2{
   margin-right: 0.5rem;
 }
 
-/* === Class Intro formatting fixes (override global body styles) === */
 
-/* Make the class intro section left-aligned instead of center */
 .class-intros {
   text-align: left;
 }
 
-/* But keep headings centered if you want */
 .class-intros h1,
 .class-intros h2,
 .class-intros h3 {
@@ -215,13 +210,11 @@ h2{
   justify-content: center;
 }
 
-/* Cards look better with left text + nicer line height */
 .student-card {
   text-align: left;
   line-height: 1.4;
 }
 
-/* Optional: when you show ONE at a time, keep it narrower & centered */
 .student-card--single {
   max-width: 800px;
   margin: 0 auto 2rem;
