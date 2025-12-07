@@ -145,11 +145,20 @@ h2{
   font-weight: 600;
 }
 
+/* stack all student cards vertically */
 .class-intros__grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-direction: column;   /* vertical */
+  gap: 1.5rem;              /* space between cards */
+  align-items: center;      /* center cards horizontally */
 }
+
+/* optional: keep each card a nice readable width */
+.class-intros__grid .student-card {
+  width: 100%;
+  max-width: 800px;
+}
+
 
 .student-card {
   border: 1px solid #ddd;
