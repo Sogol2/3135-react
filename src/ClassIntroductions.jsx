@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const API_URL = "https://dvonb.xyz/api/2025-fall/itis-3135/students?full=1";
 
-function StudentCard({ student }) {
+function StudentCard({ student, visibleFields }) {
   const {
     name,
     prefix,
@@ -14,6 +14,7 @@ function StudentCard({ student }) {
     funFact,
     links,
     media,
+    classes,
   } = student;
 
   const displayName = `${name.preferred || name.first} ${name.last}`;
@@ -21,15 +22,20 @@ function StudentCard({ student }) {
   return (
     <article className="student-card">
       <header className="student-card__header">
-        <h2>{displayName}</h2>
-        {mascot && <p className="student-card__mascot">{mascot}</p>}
-        <p className="student-card__prefix">Email prefix: {prefix}</p>
+        {visibleFields.name && (
+          <>
+            <h2>{displayName}</h2>
+            <p className="student-card__prefix">Email prefix: {prefix}</p>
+          </>
+        )}
+        {visibleFields.mascot && mascot && (
+          <p className="student-card__mascot">{mascot}</p>
+        )}
       </header>
 
       <div className="student-card__body">
-        {media?.hasImage && (
+        {visibleFields.image && media?.hasImage && (
           <figure className="student-card__media">
-            {/* media.src is a relative path, so prefix with the domain */}
             <img
               src={`https://dvonb.xyz${media.src}`}
               alt={media.caption || displayName}
@@ -39,13 +45,23 @@ function StudentCard({ student }) {
         )}
 
         <div className="student-card__content">
-          {platform && (
-            <p className="student-card__platform">
-              <strong>Platform:</strong> {platform.device} ({platform.os})
-            </p>
+          {visibleFields.extra && (
+            <>
+              {platform && (
+                <p className="student-card__platform">
+                  <strong>Computer:</strong> {platform.device} ({platform.os})
+                </p>
+              )}
+
+              {funFact && (
+                <p>
+                  <strong>Fun fact:</strong> {funFact}
+                </p>
+              )}
+            </>
           )}
 
-          {backgrounds && (
+          {visibleFields.backgrounds && backgrounds && (
             <>
               <h3>Background</h3>
               {backgrounds.personal && (
@@ -71,27 +87,28 @@ function StudentCard({ student }) {
             </>
           )}
 
-          {personalStatement && (
+          {visibleFields.classes && Array.isArray(classes) && classes.length > 0 && (
+            <>
+              <h3>Classes</h3>
+              <p>{classes.join(", ")}</p>
+            </>
+          )}
+
+          {visibleFields.personalStatement && personalStatement && (
             <>
               <h3>Personal Statement</h3>
               <p>{personalStatement}</p>
             </>
           )}
 
-          {quote?.text && (
+          {visibleFields.quote && quote?.text && (
             <blockquote className="student-card__quote">
               <p>{quote.text}</p>
               {quote.author && <footer>— {quote.author}</footer>}
             </blockquote>
           )}
 
-          {funFact && (
-            <p>
-              <strong>Fun fact:</strong> {funFact}
-            </p>
-          )}
-
-          {links && (
+          {visibleFields.links && links && (
             <p className="student-card__links">
               {links.charlotte && (
                 <a href={links.charlotte} target="_blank" rel="noreferrer">
@@ -126,8 +143,23 @@ export default function ClassIntroductions() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [mode, setMode] = useState("all"); // "all" or "single"
+
+  // "all" = list, "single" = slideshow / one at a time
+  const [mode, setMode] = useState("all");
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // checkbox state
+  const [visibleFields, setVisibleFields] = useState({
+    name: true,
+    mascot: true,
+    image: true,
+    personalStatement: true,
+    backgrounds: true,
+    classes: true,
+    extra: true, // computer, fun fact, etc.
+    quote: true,
+    links: true,
+  });
 
   useEffect(() => {
     document.title = "Sogol Maghzian || ITIS3135 Class Introductions";
@@ -164,9 +196,7 @@ export default function ClassIntroductions() {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return true;
 
-    const fullName = `${s.name.first} ${s.name.preferred || ""} ${
-      s.name.last
-    }`
+    const fullName = `${s.name.first} ${s.name.preferred || ""} ${s.name.last}`
       .toLowerCase()
       .trim();
 
@@ -197,6 +227,13 @@ export default function ClassIntroductions() {
     );
   };
 
+  const handleFieldToggle = (field) => {
+    setVisibleFields((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
   if (loading) {
     return (
       <main className="class-intros">
@@ -223,7 +260,7 @@ export default function ClassIntroductions() {
         everyone in the class.
       </p>
 
-      {/* Controls: search + mode toggle */}
+      {/* Controls: search + checkboxes + mode toggle */}
       <section className="class-intros__controls">
         <label>
           Search by name, prefix, or mascot:{" "}
@@ -235,30 +272,117 @@ export default function ClassIntroductions() {
           />
         </label>
 
+        {/* counter of how many we found */}
+        <p className="class-intros__count">
+          Found <strong>{filteredStudents.length}</strong>{" "}
+          introduction{filteredStudents.length === 1 ? "" : "s"}.
+        </p>
+
+        {/* checkboxes for which fields to show */}
+        <div className="class-intros__checkboxes">
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.name}
+              onChange={() => handleFieldToggle("name")}
+            />
+            Name
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.mascot}
+              onChange={() => handleFieldToggle("mascot")}
+            />
+            Mascot
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.image}
+              onChange={() => handleFieldToggle("image")}
+            />
+            Image
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.personalStatement}
+              onChange={() => handleFieldToggle("personalStatement")}
+            />
+            Personal Statement
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.backgrounds}
+              onChange={() => handleFieldToggle("backgrounds")}
+            />
+            Backgrounds
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.classes}
+              onChange={() => handleFieldToggle("classes")}
+            />
+            Classes
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.extra}
+              onChange={() => handleFieldToggle("extra")}
+            />
+            Extra Info (Computer, Fun Fact)
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.quote}
+              onChange={() => handleFieldToggle("quote")}
+            />
+            Quote
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={visibleFields.links}
+              onChange={() => handleFieldToggle("links")}
+            />
+            Links
+          </label>
+        </div>
+
+        {/* list vs slideshow toggle */}
         <div className="class-intros__view-toggle">
           <button
             type="button"
             className={mode === "all" ? "active" : ""}
             onClick={() => setMode("all")}
           >
-            Show all
+            Show List
           </button>
           <button
             type="button"
             className={mode === "single" ? "active" : ""}
             onClick={() => setMode("single")}
+            disabled={filteredStudents.length === 0}
           >
-            One at a time
+            Show Slideshow
           </button>
         </div>
       </section>
 
-      {/* Single-student view with forward/backward */}
+      {/* Slideshow view (one at a time + prev/next buttons) */}
       {mode === "single" && (
         <section className="class-intros__single">
           {currentStudent ? (
             <>
-              <StudentCard student={currentStudent} />
+              <StudentCard
+                student={currentStudent}
+                visibleFields={visibleFields}
+              />
               <div className="class-intros__pager">
                 <button
                   type="button"
@@ -268,10 +392,8 @@ export default function ClassIntroductions() {
                   ← Previous
                 </button>
                 <span>
-                  {filteredStudents.length > 0
-                    ? currentIndex + 1
-                    : 0}{" "}
-                  / {filteredStudents.length}
+                  {filteredStudents.length > 0 ? currentIndex + 1 : 0} /{" "}
+                  {filteredStudents.length}
                 </span>
                 <button
                   type="button"
@@ -288,12 +410,18 @@ export default function ClassIntroductions() {
         </section>
       )}
 
-      {/* All-students view */}
+      {/* All-students list view */}
       {mode === "all" && (
         <section className="class-intros__grid">
-          {filteredStudents.length === 0 && <p>No students match that search.</p>}
+          {filteredStudents.length === 0 && (
+            <p>No students match that search.</p>
+          )}
           {filteredStudents.map((student) => (
-            <StudentCard key={student.prefix} student={student} />
+            <StudentCard
+              key={student.prefix}
+              student={student}
+              visibleFields={visibleFields}
+            />
           ))}
         </section>
       )}
